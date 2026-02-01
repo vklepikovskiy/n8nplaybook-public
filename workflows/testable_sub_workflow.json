@@ -1,0 +1,178 @@
+{
+  "name": "Reusable and Independently Testable Sub-workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "color"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        208
+      ],
+      "id": "40b39083-5786-47f8-b46f-31617d3c1e18",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "1b8c3f08-b677-4a2a-8cc4-1a9ec1d2a979",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ba91ff49-9785-4bdb-8285-32b312ba91a0",
+              "name": "color",
+              "value": "blue",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        224,
+        0
+      ],
+      "id": "0ccdd511-857a-4173-9dd3-9dcbafaaf8d3",
+      "name": "Test Input"
+    },
+    {
+      "parameters": {
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        448,
+        112
+      ],
+      "id": "4da32de9-6b05-4a26-9d67-eae677dbcbfe",
+      "name": "Combine Input"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "15a5d561-e439-43b0-a11b-b969aee65d72",
+              "leftValue": "={{ $('Combine Input').item.json.color }}",
+              "rightValue": "blue",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        672,
+        112
+      ],
+      "id": "e5cdecb7-1e03-4010-8cdb-ddf39220b2fb",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "content": "## Reusable and Independently Testable Sub-workflow\nThis n8n workflow provides a standardized structure for building and testing sub-workflows in isolation. Its purpose is to help you create robust, reusable, and maintainable automations by enabling you to test the sub-workflow's logic without needing a separate parent workflow.\n### Setup Instructions:\n1. **Define Sub-workflow Inputs**: Double-click the **Execute Sub-workflow Trigger** node to define the parameters (e.g., `color`) that your sub-workflow will expect from a parent workflow.\n2. **Configure Test Data**: Use the `Test Input` node (an **Edit Fields (Set)** node connected to the **Manual Trigger**) to provide sample data for isolated testing.\n3. **Connect Inputs**: The `Combine Input` node (an **Edit Fields (Set)** node) is the entry point for your sub-workflow's core logic. It should have two inputs: one from the `Execute Sub-workflow Trigger` and one from the `Test Input` node.\n4. **Merge Inputs**: Ensure the `Combine Input` node has the 'Include Other Input Fields' option enabled to merge data from both the live and test paths seamlessly.\n\nYou can read the full blog post that explains this workflow setup in detail [here](https://n8nplaybook.com/post/2025/06/how-to-test-n8n-subworkflows/).",
+        "height": 376,
+        "width": 768
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        -432
+      ],
+      "typeVersion": 1,
+      "id": "d7c3efc5-c495-4811-8b47-7681c67068a3",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Combine Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Test Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Test Input": {
+      "main": [
+        [
+          {
+            "node": "Combine Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Combine Input": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b5bfbeef-e585-4097-8d48-b08836082bd6",
+  "meta": {
+    "instanceId": "8981479cb588889c05b145eaed421551d37a4fff11ab279d3f4744a6577c6002"
+  },
+  "id": "VdaeEvTKSXCbdvaE",
+  "tags": []
+}

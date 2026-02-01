@@ -1,0 +1,464 @@
+{
+  "name": "Iterative Fibonacci Sequence",
+  "nodes": [
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "6e831eab-e2f2-4718-85c7-38f521eb9bbf",
+                    "leftValue": "={{ $json.n }}",
+                    "rightValue": 0,
+                    "operator": {
+                      "type": "number",
+                      "operation": "lt"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "return"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.n }}",
+                    "rightValue": "={{ $('Input').item.json.n }}",
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    },
+                    "id": "3933db04-251f-4bed-9db2-cfe8124aaf14"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "0"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "bea42f68-bcc3-4f92-b428-6f067a8bf9b5",
+                    "leftValue": "={{ $json.n }}",
+                    "rightValue": "={{ $('Input').item.json.n - 1 }}",
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "1"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "f676349a-ff8a-4b2e-9c76-489c776ff0c1",
+                    "leftValue": "={{ $json.n }}",
+                    "rightValue": "={{ $('Input').item.json.n - 2 }}",
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "2"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "4055d3db-02e1-46cd-a3fa-1ffeed17e56b",
+                    "leftValue": "={{ $json.n }}",
+                    "rightValue": 0,
+                    "operator": {
+                      "type": "number",
+                      "operation": "gte"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "a + b"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        448,
+        224
+      ],
+      "id": "2526c28c-1e71-45d9-b893-0222bfe5a819",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "18fc4932-89b8-459d-941b-6e72cf5f89fc",
+              "name": "fib",
+              "value": "[]",
+              "type": "array"
+            },
+            {
+              "id": "0d8ecdc9-cfe5-4626-ac38-ad970ba321a7",
+              "name": "n",
+              "value": 10,
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        224,
+        272
+      ],
+      "id": "1bc30ee2-b061-4f9d-b423-37c7cdc0088f",
+      "name": "Input"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        272
+      ],
+      "id": "b652e793-90a9-47b7-bf29-dab5ca38353a",
+      "name": "Start"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1568,
+        528
+      ],
+      "id": "7123394d-e8b8-4889-bdb3-15e3b0426f0b",
+      "name": "End of Loop"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4498ae83-5a5a-48af-be77-b090fe101811",
+              "name": "fib",
+              "value": "={{ $json.fib.append($json.fib[$json.fib.length - 2] + $json.fib[$json.fib.length - 1]) }}",
+              "type": "array"
+            },
+            {
+              "id": "4be35049-32e8-4abc-8615-cc9ab8b43989",
+              "name": "n",
+              "value": "={{ $json.n - 1 }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        672,
+        528
+      ],
+      "id": "99177a96-a169-4d25-bdea-63fd87b3d241",
+      "name": "Add a + b"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        672,
+        128
+      ],
+      "id": "8bf48931-3e9a-475a-bf8b-5bf4fccbff40",
+      "name": "Return"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d6bfe408-241e-4b27-9bc4-147af6e986dc",
+              "name": "fib",
+              "value": "={{ $json.fib }}",
+              "type": "array"
+            },
+            {
+              "id": "8fa12dac-d420-4806-94dc-25cb8597a17e",
+              "name": "n",
+              "value": "={{ $json.n - 1 }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1344,
+        240
+      ],
+      "id": "f0af7f21-f939-45cf-962d-6fdedd36f9c4",
+      "name": "Empty"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "400a187b-99fe-44f4-9d7a-21473161a797",
+              "name": "fib",
+              "value": "={{ $json.fib.append(0) }}",
+              "type": "array"
+            },
+            {
+              "id": "70a3ec7b-27ed-4a8b-8f26-5ec0801af3a8",
+              "name": "n",
+              "value": "={{ $json.n - 1 }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1120,
+        336
+      ],
+      "id": "7cbaaf0a-d195-4b6a-a636-498bbaee98a9",
+      "name": "Add 0"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "400a187b-99fe-44f4-9d7a-21473161a797",
+              "name": "fib",
+              "value": "={{ $json.fib.append(1) }}",
+              "type": "array"
+            },
+            {
+              "id": "70a3ec7b-27ed-4a8b-8f26-5ec0801af3a8",
+              "name": "n",
+              "value": "={{ $json.n - 1 }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        896,
+        432
+      ],
+      "id": "aaba22cf-599c-47ed-98d1-1f014a348976",
+      "name": "Add 1"
+    },
+    {
+      "parameters": {
+        "content": "## Iterative Fibonacci Sequence\n\n### Introduction\n\nThis template provides a fun, low-code solution for generating a Fibonacci sequence of any length. Instead of using a single code block, it demonstrates a practical application of core n8n nodes to solve a classic programming problem.\n\n### The Idea\n\nThe template uses an iterative approach. It starts with a defined sequence length (`n`) and builds the Fibonacci array step-by-step within a loop. The loop is cleverly constructed using a `Switch` node for routing logic and `Set` nodes to update the sequence and a counter.\n\n### Purpose\n\nThis template is perfect for n8n users who want to deepen their understanding of logic and control flow within the platform. It serves as an educational example of how to implement iterative algorithms without writing custom JavaScript code.\n\n### Instructions for Setup\n\n1. **Input Node:** The workflow begins with a `Set` node named \"Input.\" You can modify the value of the `n` field in this node to define the length of the Fibonacci sequence you wish to generate.\n2. **Execution:** Run the workflow. The `Switch` node will manage the loop, and the `Set` nodes will add the correct numbers to the `fib` array.\n3. **Result:** The final result is the complete Fibonacci sequence, which can be viewed in the output of the final node.\n\n\nFor a step-by-step breakdown of how this workflow was built, check out the [full blog post here](https://n8nplaybook.com/post/2025/09/n8n-iterative-fibonacci-sequence/).",
+        "height": 720,
+        "width": 688
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        896,
+        -528
+      ],
+      "typeVersion": 1,
+      "id": "a7be6911-6c31-41cf-8c32-e6328aaddecf",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Input": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Return",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Empty",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Add 0",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Add 1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Add a + b",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "End of Loop": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add a + b": {
+      "main": [
+        [
+          {
+            "node": "End of Loop",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Empty": {
+      "main": [
+        [
+          {
+            "node": "End of Loop",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add 0": {
+      "main": [
+        [
+          {
+            "node": "End of Loop",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add 1": {
+      "main": [
+        [
+          {
+            "node": "End of Loop",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "3fd18bae-996d-4f4b-88fc-638f2bbca3dd",
+  "meta": {
+    "instanceId": "8981479cb588889c05b145eaed421551d37a4fff11ab279d3f4744a6577c6002"
+  },
+  "id": "qa54ca7JuoZAuQWE",
+  "tags": []
+}

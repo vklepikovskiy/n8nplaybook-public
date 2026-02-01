@@ -1,0 +1,343 @@
+{
+  "name": "Preventing Google Sheets Quota Errors during Batch Processing",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        288
+      ],
+      "id": "8f508825-ec55-4d49-b7de-c7cddd2e8529",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "content": "## Preventing Google Sheets Quota Errors during Batch Processing\n\nThis template provides a robust solution for dealing with Google Sheets API rate limits. It is designed for workflows that update a large number of rows in a Google Sheet and frequently fail with \"too many requests\" errors.\n\nThe template uses a `Wait` node connected to the error output of the Google Sheets node, creating a retry loop that delays execution for a set period before attempting the update again.\n\nTo use this template, simply replace the placeholder Google Sheets nodes with your own credentials and sheet. You can find an example Google Sheet for this template [here](https://docs.google.com/spreadsheets/d/1hKwP2_G6EaVSJlqWH1zYMVjarb9cuBx78D_U3HBrdhQ/edit?usp=sharing).\n\nFor a full explanation of this approach, check out the blog post [here](https://n8nplaybook.com/post/2025/07/handling-google-sheets-api-rate-limits-in-n8n/).",
+        "height": 280,
+        "width": 972
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        -144
+      ],
+      "typeVersion": 1,
+      "id": "e4e6bcaa-df68-4057-8515-4fe30ccadd08",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        448,
+        192
+      ],
+      "id": "916c78c0-38a6-4fc6-a3b2-aa74fd189f92",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4a875792-664d-4c97-af72-1252c86cc64a",
+              "name": "row_number",
+              "value": "={{ $json.row_number }}",
+              "type": "number"
+            },
+            {
+              "id": "cd47a508-aad7-4c7c-94cc-15752e8ede05",
+              "name": "Number",
+              "value": "={{ $json.Color.length }}",
+              "type": "number"
+            },
+            {
+              "id": "b67e8c39-f3f9-4614-9b5d-96876cb6a669",
+              "name": "Status",
+              "value": "DONE",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        672,
+        288
+      ],
+      "id": "63facfe2-c4b3-4a20-89b8-46c8515f8db1",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "documentId": {
+          "__rl": true,
+          "value": "1hKwP2_G6EaVSJlqWH1zYMVjarb9cuBx78D_U3HBrdhQ",
+          "mode": "list",
+          "cachedResultName": "Tip #5: Fixing Google Sheets quota exceeding issue",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hKwP2_G6EaVSJlqWH1zYMVjarb9cuBx78D_U3HBrdhQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hKwP2_G6EaVSJlqWH1zYMVjarb9cuBx78D_U3HBrdhQ/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Status",
+              "lookupValue": "READY"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        224,
+        288
+      ],
+      "id": "d0d135bc-84b9-4543-9fa0-981f9be5c40d",
+      "name": "Read Google Sheets",
+      "credentials": {
+        "googleApi": {
+          "id": "FboA3kaXSneJmEGX",
+          "name": "Google Service Account account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1hKwP2_G6EaVSJlqWH1zYMVjarb9cuBx78D_U3HBrdhQ",
+          "mode": "list",
+          "cachedResultName": "Tip #5: Fixing Google Sheets quota exceeding issue",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hKwP2_G6EaVSJlqWH1zYMVjarb9cuBx78D_U3HBrdhQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hKwP2_G6EaVSJlqWH1zYMVjarb9cuBx78D_U3HBrdhQ/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "Color",
+              "displayName": "Color",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Number",
+              "displayName": "Number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        880,
+        288
+      ],
+      "id": "3080f987-e5b4-4690-8750-4e469f55305f",
+      "name": "Update Google Sheets",
+      "credentials": {
+        "googleApi": {
+          "id": "FboA3kaXSneJmEGX",
+          "name": "Google Service Account account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "amount": "=1",
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        880,
+        528
+      ],
+      "id": "044ad4ad-1f57-49c2-ac50-2271a640ac23",
+      "name": "Wait",
+      "webhookId": "4fb44836-a76d-4886-a7c3-993bdc49b7f5"
+    },
+    {
+      "parameters": {
+        "amount": "=1",
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        528
+      ],
+      "id": "099a89d0-7d05-4e8a-9fdb-a4ab2deda5a0",
+      "name": "Wait1",
+      "webhookId": "4fb44836-a76d-4886-a7c3-993bdc49b7f5"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Read Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Update Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Update Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Read Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "7d3ce1f7-42c2-4763-9100-7cc633b59022",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "8981479cb588889c05b145eaed421551d37a4fff11ab279d3f4744a6577c6002"
+  },
+  "id": "ieTfr3OU6NUM9CL4",
+  "tags": []
+}

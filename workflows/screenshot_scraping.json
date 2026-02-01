@@ -1,0 +1,439 @@
+{
+  "name": "Multi-Service Screenshot Scraping: ScraperAPI, Scrapingdog, & ScreenshotOne",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        192
+      ],
+      "id": "d6ee3475-a484-426e-aca8-f66fe533e814",
+      "name": "Start"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.headers['sa-screenshot'] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        656,
+        0
+      ],
+      "id": "68666b53-7469-4c44-acbf-fe0ebd09726f",
+      "name": "Download Screenshot"
+    },
+    {
+      "parameters": {
+        "url": "https://api.scraperapi.com",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "url",
+              "value": "https://n8nplaybook.com"
+            },
+            {
+              "name": "screenshot",
+              "value": "true"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        432,
+        0
+      ],
+      "id": "6a232d4f-df57-4538-9d71-59698f254203",
+      "name": "Scrape Screenshot Using ScraperAPI",
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "kKt6yoUenO13BDSx",
+          "name": "ScraperAPI Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://api.scrapingdog.com/screenshot",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "url",
+              "value": "https://n8nplaybook.com"
+            },
+            {
+              "name": "fullPage",
+              "value": "true"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        432,
+        192
+      ],
+      "id": "a0bbb6fe-2551-4be2-9e9c-095021979e69",
+      "name": "Scrape Screenshot Using Scrapingdog",
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "r4PqyR8jM3W2KrBT",
+          "name": "Scrapingdog account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://api.screenshotone.com/take",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "url",
+              "value": "https://n8nplaybook.com"
+            },
+            {
+              "name": "full_page",
+              "value": "true"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        432,
+        384
+      ],
+      "id": "943ec1e0-4351-4aba-b3c3-cc7ca537007f",
+      "name": "Scrape Screenshot Using ScreenshotOne",
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "AsPBIbWxkvL1lvCu",
+          "name": "ScreenshotOne account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Multi-Service Screenshot Scraping: ScraperAPI, Scrapingdog, & ScreenshotOne\n\nThis n8n template demonstrates how to use three different screenshot services—[ScraperAPI](https://n8nplaybook.com/go/scraperapi/), [Scrapingdog](https://n8nplaybook.com/go/scrapingdog/), and [ScreenshotOne](https://n8nplaybook.com/go/screenshotone/)—in a single workflow to capture website screenshots. It is a perfect tool for quickly comparing their performance and features.\n\n### Purpose of the Template\nThis template provides a ready-to-use framework for taking website screenshots using [ScraperAPI](https://n8nplaybook.com/go/scraperapi/), [Scrapingdog](https://n8nplaybook.com/go/scrapingdog/), and [ScreenshotOne](https://n8nplaybook.com/go/screenshotone/). By running this workflow, you can easily see the setup for each service and compare their response times and output quality based on a single target URL.\n\n### Setup Instructions\n1. **Obtain API Keys**: Sign up for accounts with [ScraperAPI](https://n8nplaybook.com/go/scraperapi/), [Scrapingdog](https://n8nplaybook.com/go/scrapingdog/), and [ScreenshotOne](https://n8nplaybook.com/go/screenshotone/) to get your unique API keys.\n2. **Set Up Credentials**: In your n8n instance, create separate credentials for each service, securely storing the API keys. These credentials should be of type \"Query Auth.\" Use these credentials to authenticate the corresponding `HTTP Request` nodes within the template.\n3. **Configure Nodes**: Set the `url` query parameter in each HTTP Request node to the specific website you want to scrape.\n4. **Execute Workflow**: Run the workflow to see the screenshot results from all three services in a single run.\n\nFor a detailed review and benchmark comparison of these services, you can read the [full blog post](https://n8nplaybook.com/post/2025/09/n8n-screenshot-services-review).",
+        "height": 656,
+        "width": 528
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -592,
+        -64
+      ],
+      "typeVersion": 1,
+      "id": "298b770c-abb1-48a2-8847-809f94f61543",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "e172e53c-44b6-4e25-abe3-c997f0a66928",
+      "name": "Get Current Date"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        208,
+        192
+      ],
+      "id": "0b5dec26-dc7a-45d5-ad50-a580d27c8508",
+      "name": "Get Current Date1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        208,
+        384
+      ],
+      "id": "2b5a241d-8026-4e33-b3f0-e41b202a66b5",
+      "name": "Get Current Date2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6b69cecf-82db-45d0-8f46-d2801948019b",
+              "name": "service",
+              "value": "ScraperAPI",
+              "type": "string"
+            },
+            {
+              "id": "1905ca7b-4d17-401d-8f40-254adf002e7e",
+              "name": "execution_time",
+              "value": "={{ $now.diffTo($('Get Current Date').item.json.currentDate, 'seconds') }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        864,
+        0
+      ],
+      "id": "0937e5e9-769f-4f19-bee7-ab4d52b6cc69",
+      "name": "Output"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6b69cecf-82db-45d0-8f46-d2801948019b",
+              "name": "service",
+              "value": "Scrapingdog",
+              "type": "string"
+            },
+            {
+              "id": "1905ca7b-4d17-401d-8f40-254adf002e7e",
+              "name": "execution_time",
+              "value": "={{ $now.diffTo($('Get Current Date1').item.json.currentDate, 'seconds') }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        656,
+        192
+      ],
+      "id": "c5a6a2f1-e890-4c62-85d2-ed843c2e2dd8",
+      "name": "Output1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6b69cecf-82db-45d0-8f46-d2801948019b",
+              "name": "service",
+              "value": "ScreenshotOne",
+              "type": "string"
+            },
+            {
+              "id": "1905ca7b-4d17-401d-8f40-254adf002e7e",
+              "name": "execution_time",
+              "value": "={{ $now.diffTo($('Get Current Date2').item.json.currentDate, 'seconds') }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        656,
+        384
+      ],
+      "id": "b3231575-9de8-4460-9946-918b3eda8958",
+      "name": "Output2"
+    },
+    {
+      "parameters": {
+        "numberInputs": 3
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1088,
+        176
+      ],
+      "id": "62a3a1ca-55ca-4f84-a06d-b11b96bcb066",
+      "name": "Merge"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Get Current Date",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Current Date1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Current Date2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scrape Screenshot Using ScraperAPI": {
+      "main": [
+        [
+          {
+            "node": "Download Screenshot",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Current Date": {
+      "main": [
+        [
+          {
+            "node": "Scrape Screenshot Using ScraperAPI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Current Date1": {
+      "main": [
+        [
+          {
+            "node": "Scrape Screenshot Using Scrapingdog",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Current Date2": {
+      "main": [
+        [
+          {
+            "node": "Scrape Screenshot Using ScreenshotOne",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Screenshot": {
+      "main": [
+        [
+          {
+            "node": "Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scrape Screenshot Using Scrapingdog": {
+      "main": [
+        [
+          {
+            "node": "Output1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scrape Screenshot Using ScreenshotOne": {
+      "main": [
+        [
+          {
+            "node": "Output2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Output": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Output1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Output2": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "0c1bb2f4-c060-4355-9b79-ad4d22476a51",
+  "meta": {
+    "instanceId": "8981479cb588889c05b145eaed421551d37a4fff11ab279d3f4744a6577c6002"
+  },
+  "id": "9UUz6fNiU6LhLlo6",
+  "tags": []
+}
