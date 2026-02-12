@@ -1,0 +1,174 @@
+{
+  "name": "AI Inventory Assistant: Google Sheets & Gemini",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "d5013feb-c859-4b92-bad7-637a9d6b06e8",
+      "name": "When chat message received",
+      "webhookId": "21dbe2b4-177b-44ad-a8b7-c7ba326ad285"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are a helpful inventory assistant for a high-end hardware store.\nYou have access to a tool that returns our entire product list.\n\nWhen a user asks about a product:\n1. Call the tool to get the current inventory.\n2. Search the list for the most relevant items (handle typos and partial matches).\n3. Use the conversation memory to understand follow-up questions (e.g., if a user says 'is it in stock?', refer to the previously mentioned item).\n4. Provide the product name and price as the primary response.\n5. Provide stock levels or quantities if the user asks about availability or stock.\n6. If an item is out of stock, suggest a similar alternative from the list."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        280,
+        0
+      ],
+      "id": "97362969-97c6-476d-8791-8bdc4420f4f1",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        352,
+        224
+      ],
+      "id": "be045a2a-e0bd-4730-b124-57759f7704dd",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use this tool to look up current pricing and stock levels for computer hardware. It contains SKU, product names, categories, prices, and availability.",
+        "authentication": "serviceAccount",
+        "documentId": {
+          "__rl": true,
+          "value": "1wvnyqtsrlwZwpZG9GpBhmc1S0n_bH4jcXE5paMdXaxc",
+          "mode": "list",
+          "cachedResultName": "Hardware Pricelist",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1wvnyqtsrlwZwpZG9GpBhmc1S0n_bH4jcXE5paMdXaxc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1wvnyqtsrlwZwpZG9GpBhmc1S0n_bH4jcXE5paMdXaxc/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        480,
+        224
+      ],
+      "id": "51909c54-b0e1-487a-808c-407b44f65dfc",
+      "name": "Read Inventory",
+      "credentials": {
+        "googleApi": {
+          "id": "FboA3kaXSneJmEGX",
+          "name": "Google Service Account account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        224,
+        224
+      ],
+      "id": "f4ec85c5-acb5-40b1-9f6e-a325a978d3fd",
+      "name": "Google Gemini",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "MaYmw2JDvyD9nEZV",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## AI Inventory Assistant: Google Sheets & Gemini\n\nThis workflow creates a smart AI agent that uses a Google Sheet as its product catalog. It is the simplest way to build a \"Chat with your Data\" bot without needing complex databases.\n\n### How it works:\n\n1. **Chat Interface:** Users ask questions via the n8n Chat Trigger.\n2. **AI Logic:** The AI Agent node (Gemini) decides when to check the inventory.\n3. **Data Retrieval:** A Google Sheets tool pulls the entire list, allowing the AI to handle typos and find the best matches.\n4. **Memory:** A Simple Memory node enables natural follow-up questions (e.g., \"How much is it?\").\n\n### Setup Instructions:\n\n1. **Google Sheets:** Create a sheet with columns: SKU, Name, Price, Quantity and Category.\n2. **Credentials:** Set up your Google Sheets and Google Gemini (AI Studio) credentials in n8n.\n3. **Variables:** In the Google Sheets node, select your spreadsheet and the \"Inventory\" sheet/tab.\n4. **Prompt:** The template includes a pre-configured System Prompt. Adjust the personality to match your brand.\n\n\n**Ideal for:** Small product catalogs (<100 items), price lists, and internal inventory tracking.\n\nTo learn more about how to build and optimize this workflow, read the full blog post [here](https://n8nplaybook.com/post/2026/02/simple-n8n-inventory-ai-agent/).",
+        "height": 576,
+        "width": 688
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -768,
+        -128
+      ],
+      "typeVersion": 1,
+      "id": "2a77f30d-9db6-421d-9f7b-bd45908b2bb1",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Inventory": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "92ee9949-b9ed-47e0-a93c-e9d74d5418e8",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "8981479cb588889c05b145eaed421551d37a4fff11ab279d3f4744a6577c6002"
+  },
+  "id": "-RO_Cxg3B9kpKp_jlyTUT",
+  "tags": []
+}

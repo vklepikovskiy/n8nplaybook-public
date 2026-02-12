@@ -10,7 +10,13 @@ Standards for building maintainable, testable, and complex logic without heavy c
 | `fibonacci.json` | An iterative implementation of the Fibonacci sequence. It showcases how to handle state, variables, and loops using standard nodes (Switch, Edit Fields) instead of custom JavaScript. | [A Fun Project: Building an Iterative Fibonacci Generator in n8n](https://n8nplaybook.com/post/2025/09/n8n-iterative-fibonacci-sequence/) |
 | `nested_loops.json` | A blueprint for handling nested iteration in n8n. Solves the "loop-in-loop" limitation by offloading the inner logic to a modular sub-workflow. | [How to Handle Nested Loops in n8n with Sub-workflows](https://n8nplaybook.com/post/2025/07/how-to-handle-nested-loops-in-n8n-with-sub-workflows/) |
 
-### 🛡️ 2. Resilience & Error Handling
+### 🤖 2. AI & LLM Automation
+Leveraging Large Language Models and AI Agents to build intelligent assistants.
+| File | Description | Blog Post |
+| :--- | :--- | :--- |
+| `ai_inventory_assistant.json` | A smart AI assistant that uses Google Sheets as a database. Features conversational memory to handle follow-up questions and partial matching for product lookups. | [Build Your Own AI Sales Assistant: The Simplest Inventory Agent](https://n8nplaybook.com/post/2026/02/simple-n8n-inventory-ai-agent/) |
+
+### 🛡️ 3. Resilience & Error Handling
 Patterns to handle API rate limits, service outages, and execution conflicts.
 | File | Description | Blog Post |
 | :--- | :--- | :--- |
@@ -18,7 +24,7 @@ Patterns to handle API rate limits, service outages, and execution conflicts.
 | `google_sheets_quota_errors.json` | Specifically designed to prevent "Too Many Requests" errors with Google APIs. It uses a recursive `Wait` loop to automatically retry batch updates after a 1-minute backoff if rate limits are hit. | [Handling Google Sheets API Rate Limits in n8n](https://n8nplaybook.com/post/2025/07/handling-google-sheets-api-rate-limits-in-n8n/) |
 | `simultaneous_executions.json` | Prevents multiple instances of a scheduled workflow from running concurrently by utilizing n8n's **Execution Timeout** setting. This ensures sequential processing and avoids race conditions or data duplication. | [How to Prevent Concurrent n8n Workflows with a Simple Trick](https://n8nplaybook.com/post/2025/07/how-to-prevent-concurrent-n8n-workflows/) |
 
-### 💾 3. Data Transformation & Web Tools
+### 💾 4. Data Transformation & Web Tools
 Automating the extraction, conversion, and processing of web-based data.
 | File | Description | Blog Post |
 | :--- | :--- | :--- |
@@ -27,7 +33,7 @@ Automating the extraction, conversion, and processing of web-based data.
 | `no_code_base64.json` | A pure no-code solution to convert multiple binary files to Base64 strings. Uses native nodes to unzip, extract, and transform data. | [The No-Code Evolution: Base64 Encoding Multiple Files in n8n (Part 2)](https://n8nplaybook.com/post/2025/10/no-code-base64-encoding-in-n8n/) |
 | `base64_encode.json` | Demonstrates how to download a ZIP file, extract its contents, and use a **Code** node to Base64-encode multiple binary files for API uploads. | [From Binary to Base64: A Guide to File Encoding in n8n Workflows](https://n8nplaybook.com/post/2025/08/from-binary-to-base64-in-n8n/) |
 
-### 🔗 4. API & Interface Integration
+### 🔗 5. API & Interface Integration
 Turning n8n into a backend service or using external apps as a frontend.
 | File | Description | Blog Post |
 | :--- | :--- | :--- |
