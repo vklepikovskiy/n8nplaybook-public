@@ -15,6 +15,7 @@ Leveraging Large Language Models and AI Agents to build intelligent assistants.
 | File | Description | Blog Post |
 | :--- | :--- | :--- |
 | `ai_inventory_assistant.json` | A smart AI assistant that uses Google Sheets as a database. Features conversational memory to handle follow-up questions and partial matching for product lookups. | [Build Your Own AI Sales Assistant: The Simplest Inventory Agent](https://n8nplaybook.com/post/2026/02/simple-n8n-inventory-ai-agent/) |
+| `advanced_ai_inventory_agent.json` | An advanced evolution of the Sheets-based agent. It solves LLM context limits by using a Supabase Vector Store for high-speed semantic search across thousands of items. | [Scaling to Thousands of Items: Building a Vector-Powered AI Agent](https://n8nplaybook.com/post/2026/02/scaling-n8n-inventory-ai-agent-supabase-vector-rag/) |
 
 ### 🛡️ 3. Resilience & Error Handling
 Patterns to handle API rate limits, service outages, and execution conflicts.
