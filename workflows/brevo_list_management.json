@@ -1,0 +1,511 @@
+{
+  "name": "Brevo List Management Master Template",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://api.brevo.com/v3/contacts/lists",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "sendInBlueApi",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "limit",
+              "value": "50"
+            },
+            {
+              "name": "sort",
+              "value": "desc"
+            }
+          ]
+        },
+        "options": {
+          "pagination": {
+            "pagination": {
+              "parameters": {
+                "parameters": [
+                  {
+                    "name": "offset",
+                    "value": "={{ $pageCount * 50 }}"
+                  }
+                ]
+              },
+              "paginationCompleteWhen": "other",
+              "completeExpression": "={{ $pageCount * 50 >= $response.body.count }}"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -432,
+        64
+      ],
+      "id": "331bbc24-cf91-453f-96a5-d3aca68c9810",
+      "name": "Get All Lists",
+      "credentials": {
+        "sendInBlueApi": {
+          "id": "Ensn1PQhJEp0V4jF",
+          "name": "Brevo account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "### 1. Get All Lists\n\nRetrieves all your existing lists with limiting and sorting options.\n\n* **Method:** GET\n* **Endpoint:** https://api.brevo.com/v3/contacts/lists\n* **Sorting:** You can set a `sort` query parameter with values `asc` (ascending) or `desc` (descending) to organize your results by creation date.",
+        "height": 432,
+        "width": 496,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -496,
+        -208
+      ],
+      "typeVersion": 1,
+      "id": "92cf0009-ee41-434f-8e4a-ddd17959da47",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "### 2. Create a List\n\nCreate a new contact list within a specific folder.\n\n* **Method:** POST\n* **Endpoint:** https://api.brevo.com/v3/contacts/lists\n* **Body:** JSON containing `name` and `folderId`.",
+        "height": 432,
+        "width": 352,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        16,
+        -208
+      ],
+      "typeVersion": 1,
+      "id": "6138c585-5637-4136-83fb-0541efd5f126",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.brevo.com/v3/contacts/lists",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "sendInBlueApi",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "folderId",
+              "value": "={{ 1 }}"
+            },
+            {
+              "name": "name",
+              "value": "New Customers"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        144,
+        64
+      ],
+      "id": "e8a0d346-7216-4bb0-872d-012a47cad94c",
+      "name": "Create a List",
+      "credentials": {
+        "sendInBlueApi": {
+          "id": "Ensn1PQhJEp0V4jF",
+          "name": "Brevo account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "### 3. Get a List's Details\n\nFetch metadata for a specific list ID.\n\n* **Method:** GET\n* **Endpoint:** https://api.brevo.com/v3/contacts/lists/{listId}\n* **Path Parameter:** This operation requires the `listId` as a path parameter.",
+        "height": 432,
+        "width": 352,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        384,
+        -208
+      ],
+      "typeVersion": 1,
+      "id": "f2dee9b4-ac3c-4806-a568-616bc4f3fb88",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "### 4. Update a List\n\nRename or move an existing list.\n\n* **Method:** PUT\n* **Endpoint:** https://api.brevo.com/v3/contacts/lists/{listId}\n* **Body:** JSON containing `name` or `folderId`.\n* **Path Parameter:** This operation requires the `listId` as a path parameter.",
+        "height": 432,
+        "width": 352,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        752,
+        -208
+      ],
+      "typeVersion": 1,
+      "id": "fd4a47a1-62b4-4206-8835-862ca3f39900",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "https://api.brevo.com/v3/contacts/lists/5",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "sendInBlueApi",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "name",
+              "value": "Previous Customers"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        880,
+        64
+      ],
+      "id": "94ee5daa-5f8e-433d-b044-1293f0ce9aec",
+      "name": "Update a List",
+      "credentials": {
+        "sendInBlueApi": {
+          "id": "Ensn1PQhJEp0V4jF",
+          "name": "Brevo account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://api.brevo.com/v3/contacts/lists/5",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "sendInBlueApi",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        512,
+        64
+      ],
+      "id": "21e389d7-43a7-4547-8498-77003e96c3b1",
+      "name": "Get a List’s Details",
+      "credentials": {
+        "sendInBlueApi": {
+          "id": "Ensn1PQhJEp0V4jF",
+          "name": "Brevo account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "### 5. Delete a List\n\nPermanently remove a list (contacts remain in the database).\n\n* **Method:** DELETE\n* **Endpoint:** https://api.brevo.com/v3/contacts/lists/{listId}\n* **Path Parameter:** This operation requires the `listId` as a path parameter.",
+        "height": 432,
+        "width": 352,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1120,
+        -208
+      ],
+      "typeVersion": 1,
+      "id": "01f37ece-824d-404b-9897-3c21910ee2bb",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "method": "DELETE",
+        "url": "https://api.brevo.com/v3/contacts/lists/5",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "sendInBlueApi",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1248,
+        64
+      ],
+      "id": "f0cd3737-db01-4122-9a16-dbc5bde0fd07",
+      "name": "Delete a List",
+      "credentials": {
+        "sendInBlueApi": {
+          "id": "Ensn1PQhJEp0V4jF",
+          "name": "Brevo account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "### 6. Get Contacts in a List\n\nReturns a list of all contacts belonging to a specific list ID.\n\n* **Method:** GET\n* **Endpoint:** https://api.brevo.com/v3/contacts/lists/{listId}/contacts\n* **Path Parameter:** This operation requires the `listId` as a path parameter.\n* **Sorting:** You can set a `sort` query parameter with values `asc` (ascending) or `desc` (descending) to organize your results by creation date.\n* **Pagination:** Just like the \"Get All Lists\" operation, this node is configured with auto-pagination. It will automatically loop through all contacts in the list and return them as a single combined result.",
+        "height": 512,
+        "width": 496,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -496,
+        240
+      ],
+      "typeVersion": 1,
+      "id": "77f035d0-3ebd-4dfd-8e46-64ac9383dc68",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "url": "https://api.brevo.com/v3/contacts/lists/2/contacts",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "sendInBlueApi",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "limit",
+              "value": "500"
+            },
+            {
+              "name": "sort",
+              "value": "desc"
+            }
+          ]
+        },
+        "options": {
+          "pagination": {
+            "pagination": {
+              "parameters": {
+                "parameters": [
+                  {
+                    "name": "offset",
+                    "value": "={{ $pageCount * 500 }}"
+                  }
+                ]
+              },
+              "paginationCompleteWhen": "other",
+              "completeExpression": "={{ $pageCount * 500 >= $response.body.count }}"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -432,
+        576
+      ],
+      "id": "4450f907-36cc-4128-8c8d-44c3dbe02081",
+      "name": "Get Contacts in a List",
+      "credentials": {
+        "sendInBlueApi": {
+          "id": "Ensn1PQhJEp0V4jF",
+          "name": "Brevo account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "lists"
+            }
+          ]
+        },
+        "options": {
+          "mergeLists": true
+        }
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        -224,
+        64
+      ],
+      "id": "93cc4f84-50de-45bf-b1d1-1da4e33b74ac",
+      "name": "Aggregate Lists Pages"
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "contacts"
+            }
+          ]
+        },
+        "options": {
+          "mergeLists": true
+        }
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        -224,
+        576
+      ],
+      "id": "6e57a640-173f-4cdd-8a54-0e8dfb2c96b2",
+      "name": "Aggregate Contacts Pages"
+    },
+    {
+      "parameters": {
+        "content": "### 7. Add Existing Contacts to a List\n\nBulk add contacts to a list using their emails or IDs.\n\n* **Method:** POST\n* **Endpoint:** https://api.brevo.com/v3/contacts/lists/{listId}/contacts/add\n* **Path Parameter:** This operation requires the `listId` as a path parameter.\n* **Body:** JSON containing `emails` as array of emails (up to 150 in one request). Optionally `ids` or `extIds` can be used instead.",
+        "height": 512,
+        "width": 528,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        16,
+        240
+      ],
+      "typeVersion": 1,
+      "id": "5c889d4a-d61b-460d-aeb9-27b277e7345c",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.brevo.com/v3/contacts/lists/2/contacts/add",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "sendInBlueApi",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "emails",
+              "value": "={{ [\"jaffa123@example.org\", \"sandora234@example.org\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        224,
+        576
+      ],
+      "id": "b216ae94-ecd4-4408-9de4-00e4bf82a688",
+      "name": "Add Existing Contacts to a List",
+      "credentials": {
+        "sendInBlueApi": {
+          "id": "Ensn1PQhJEp0V4jF",
+          "name": "Brevo account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "### 8. Delete Contacts from a List\n\nRemove specific contacts from a list without deleting the contact entirely.\n\n* **Method:** POST\n* **Endpoint:** https://api.brevo.com/v3/contacts/lists/{listId}/contacts/remove\n* **Path Parameter:** This operation requires the `listId` as a path parameter.\n* **Body:** JSON containing `emails` as array of emails (up to 150 in one request). Optionally `ids` or `extIds` can be used instead.",
+        "height": 512,
+        "width": 544,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        560,
+        240
+      ],
+      "typeVersion": 1,
+      "id": "1135ee29-8e51-492a-b192-8987de3d432e",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.brevo.com/v3/contacts/lists/2/contacts/remove",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "sendInBlueApi",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "emails",
+              "value": "={{ [\"jaffa123@example.org\", \"sandora234@example.org\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        784,
+        576
+      ],
+      "id": "ce0153c4-d910-42a8-9360-80c8ac7b2bfe",
+      "name": "Delete Contacts from a List",
+      "credentials": {
+        "sendInBlueApi": {
+          "id": "Ensn1PQhJEp0V4jF",
+          "name": "Brevo account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Brevo List Management Master Template\nThis template provides a complete set of HTTP Request nodes for advanced [Brevo](https://n8nplaybook.com/go/brevo/) List operations not currently found in the native n8n node.\nYou can also read the full article related to this template [here](https://n8nplaybook.com/post/2026/02/brevo-list-management-n8n-api/).",
+        "height": 112,
+        "width": 1968
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -496,
+        -336
+      ],
+      "typeVersion": 1,
+      "id": "d9ea0906-5d19-4533-9bb6-5bfc7dcbd260",
+      "name": "Sticky Note8"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Get All Lists": {
+      "main": [
+        [
+          {
+            "node": "Aggregate Lists Pages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Contacts in a List": {
+      "main": [
+        [
+          {
+            "node": "Aggregate Contacts Pages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add Existing Contacts to a List": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "cb50fecf-b7a7-406e-9782-e19eb8042b86",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "8981479cb588889c05b145eaed421551d37a4fff11ab279d3f4744a6577c6002"
+  },
+  "id": "4zJuWaZS1gKl73hlQcbgq",
+  "tags": []
+}
