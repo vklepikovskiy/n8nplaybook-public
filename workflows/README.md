@@ -33,6 +33,7 @@ Automating the extraction, conversion, and processing of web-based data.
 | `screenshot_scraping.json` | A comparative workflow for **ScraperAPI**, **Scrapingdog**, and **ScreenshotOne**. Ideal for selecting the best screenshot service for your needs. | [Taking Website Screenshots in n8n: A Review of Three Services](https://n8nplaybook.com/post/2025/09/n8n-screenshot-services-review/) |
 | `no_code_base64.json` | A pure no-code solution to convert multiple binary files to Base64 strings. Uses native nodes to unzip, extract, and transform data. | [The No-Code Evolution: Base64 Encoding Multiple Files in n8n (Part 2)](https://n8nplaybook.com/post/2025/10/no-code-base64-encoding-in-n8n/) |
 | `base64_encode.json` | Demonstrates how to download a ZIP file, extract its contents, and use a **Code** node to Base64-encode multiple binary files for API uploads. | [From Binary to Base64: A Guide to File Encoding in n8n Workflows](https://n8nplaybook.com/post/2025/08/from-binary-to-base64-in-n8n/) |
+| `automate-indexnow-sitemap-sync.json` | Automatically notifies search engines about content updates by parsing an XML sitemap and filtering for recently modified pages using the IndexNow protocol. | [How to Automate SEO Indexing with n8n and IndexNow](https://n8nplaybook.com/post/2026/02/automate-indexnow-seo-n8n-workflow/) |
 
 ### 🔗 5. API & Interface Integration
 Turning n8n into a backend service or using external apps as a frontend.

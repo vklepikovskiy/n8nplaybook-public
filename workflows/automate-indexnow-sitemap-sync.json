@@ -1,0 +1,295 @@
+{
+  "name": "Automated SEO Indexing via IndexNow & XML Sitemap",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "9b6fb884-d2f3-4664-922a-aabbd6222b3f",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Configuration').item.json.sitemap_url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        448,
+        0
+      ],
+      "id": "ebf4d0c8-33fb-408e-95bd-f9515094fb53",
+      "name": "Read Sitemap"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.xml",
+      "typeVersion": 1,
+      "position": [
+        672,
+        0
+      ],
+      "id": "5116fe05-5619-4cfd-9b2c-50dbd539aab2",
+      "name": "Parse XML"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "urlset.url",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        896,
+        0
+      ],
+      "id": "5945d668-0608-4e87-b85d-3323f094b296",
+      "name": "Split Out URLs"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "dffb9dd9-e69c-4302-872d-a257d649dda4",
+              "leftValue": "={{ $json.lastmod }}",
+              "rightValue": "={{ $('Configuration').item.json.modified_after }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "after"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.3,
+      "position": [
+        1120,
+        0
+      ],
+      "id": "6917f50d-8471-4240-af25-c7ddfbc092ad",
+      "name": "Filter Last Modified Pages"
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "loc",
+              "renameField": true,
+              "outputFieldName": "urlList"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1344,
+        0
+      ],
+      "id": "093a6adb-d208-4cf9-b255-595c8a4f9e2f",
+      "name": "Aggregate URLs"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.indexnow.org/indexnow",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "host",
+              "value": "={{ $('Configuration').item.json.sitemap_url.extractDomain() }}"
+            },
+            {
+              "name": "key",
+              "value": "={{ $('Configuration').item.json.indexnow_key }}"
+            },
+            {
+              "name": "keyLocation",
+              "value": "=https://{{ $('Configuration').item.json.sitemap_url.extractDomain() }}/{{ $('Configuration').item.json.indexnow_key }}.txt"
+            },
+            {
+              "name": "urlList",
+              "value": "={{ $json.urlList }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1568,
+        0
+      ],
+      "id": "1c45c4f1-dcbc-42ab-9425-a68cb6207b92",
+      "name": "Send URLs to IndexNow"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c842ea3f-a4b1-43a5-b517-87573ef7f7eb",
+              "name": "sitemap_url",
+              "value": "https://example.com/sitemap.xml",
+              "type": "string"
+            },
+            {
+              "id": "fa030335-3323-47bc-ae4f-a5bdc06c0e53",
+              "name": "modified_after",
+              "value": "={{ $now.minus(1, 'week').toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "55ff9efe-e537-4bc9-bdd2-764495fbeb01",
+              "name": "indexnow_key",
+              "value": "4262631fe57245bd9bd1cef01d1c3fa4",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        224,
+        0
+      ],
+      "id": "0f3a430b-fd33-42e2-b963-5eda88c55fd0",
+      "name": "Configuration"
+    },
+    {
+      "parameters": {
+        "content": "## Automated SEO Indexing via IndexNow & XML Sitemap\n\nStop waiting for search engines to discover your content updates. This workflow automates the process of notifying search engines (Bing, Yandex, etc.) about new or updated pages using the IndexNow protocol.\n\nBy parsing your XML sitemap and filtering for pages modified within a specific timeframe (e.g., the last week), it ensures your crawl budget is used efficiently and your latest content appears in search results almost instantly.\n\n### How to Configure:\n\n1. **Host your Key:** Generate an IndexNow key and upload the `.txt` file to your website's root directory.\n2. **Setup Configuration Node:**\n   * Enter your `sitemap_url` (e.g., https://yoursite.com/sitemap.xml).\n   * Enter your `indexnow_key`.\n   * Set the `modified_after` variable to define your lookback window (e.g., -7d or a specific ISO date).\n3. **Schedule:** Adjust the Schedule Trigger to your preferred frequency (default is daily).\n4. **Activate:** Once configured, turn the workflow on to start proactive indexing.\n\n\nFor a deep dive into how this workflow works and why it's a game-changer for your SEO strategy, check out our full guide on n8nplaybook.com.\n[Read the full Playbook Article here](https://n8nplaybook.com/post/2026/02/automate-indexnow-seo-n8n-workflow/)",
+        "height": 448,
+        "width": 1664
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        -480
+      ],
+      "typeVersion": 1,
+      "id": "e415a830-b8ec-4dd1-8e96-1ce54205862d",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Configuration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Sitemap": {
+      "main": [
+        [
+          {
+            "node": "Parse XML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse XML": {
+      "main": [
+        [
+          {
+            "node": "Split Out URLs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out URLs": {
+      "main": [
+        [
+          {
+            "node": "Filter Last Modified Pages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Last Modified Pages": {
+      "main": [
+        [
+          {
+            "node": "Aggregate URLs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate URLs": {
+      "main": [
+        [
+          {
+            "node": "Send URLs to IndexNow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Configuration": {
+      "main": [
+        [
+          {
+            "node": "Read Sitemap",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "a587b137-1795-47ca-bb60-792d63830b31",
+  "meta": {
+    "instanceId": "8981479cb588889c05b145eaed421551d37a4fff11ab279d3f4744a6577c6002"
+  },
+  "id": "Sw8xHiqCCaMYwY5c1ejxb",
+  "tags": []
+}
